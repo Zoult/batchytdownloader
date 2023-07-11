@@ -1,19 +1,13 @@
 ## [⬇ Download](https://raw.githack.com/Zoult/mp3downloader/main/MP3%20Downloader.bat)
-
-### ⚠️ Disclaimer
-For any security check, this tool is free and open source so it can be revised and edited to assure that this tool is completely harmless.
+![](https://cdn.discordapp.com/attachments/923633338378489856/1128395057419014184/image.png)
 
 ### 📖 Requirements
 This scripts automatically checks if `yt-dlp` and `ffmpeg` are installed.
 If not, it will install both for you, letting you choose the desired installation folder.
 
-### 🏃 Usage
-It's very trivial, just open it and paste the link.
-The MP3 will be installed where the script runs.
-
 ### 👥 Credits
-[yt-dlp](https://github.com/yt-dlp/yt-dlp), the main tool used for downloading MP3s
-<br>[FFmpeg](https://github.com/FFmpeg/FFmpeg), the tool used for converting to MP3s</br>
+[yt-dlp](https://github.com/yt-dlp/yt-dlp), the main tool used for downloading videos
+<br>[FFmpeg](https://github.com/FFmpeg/FFmpeg), the tool used for converting to other formats</br>
 
 ---
 
