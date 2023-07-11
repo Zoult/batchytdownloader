@@ -17,7 +17,7 @@ goto :screen
 
 :ffmpegCheck
 where /q ffmpeg
-if %errorlevel% == 0 goto :dl
+if %errorlevel% == 0 goto :setdefaults
 set program=ffmpeg
 goto :screen
 
@@ -63,12 +63,101 @@ echo.
 pause
 exit
 
-:dl
-set /p url="Paste link: "
+:setdefaults
+set track=bestaudio
+set ao=x
+set vo=_
+set av=_
+set format=mp3
+set mp3=x
+set ogg=_
+set aac=_
+set mp4=_
+set mkv=_
+set avi=_
+
+:settings
+cls
+echo Track.....Enter 1 to switch   #   Format.....Enter 2 to switch
+echo [%ao%] Audio only                #   [%mp3%] MP3  [%mp4%] MP4
+echo [%vo%] Video only                #   [%ogg%] OGG  [%mkv%] MKV
+echo [%av%] Audio + video             #   [%aac%] AAC  [%avi%] AVI
 echo.
-yt-dlp -x -f bestaudio --audio-format mp3 %url%
-echo.
-echo MP3 downloaded successfully
+::echo %track% - %format% DEBUG
+set /p url="Select option / Paste link: "
+
+if "%url%"=="1" (
+    goto :track
+) else if "%url%"=="2" (
+    goto :format
+) else goto :download
+
+:track
+if "%ao%"=="x" (
+    set ao=_
+    set vo=x
+    set track=bestvideo
+    goto :settings
+)
+if "%vo%"=="x" (
+    set vo=_
+    set av=x
+    set track=bestaudio+bestvideo
+    goto :settings
+)
+if "%av%"=="x" (
+    set av=_
+    set ao=x
+    set track=bestaudio
+    goto :settings
+)
+
+:format
+if "%mp3%"=="x" (
+    set mp3=_
+    set ogg=x
+    set format=ogg
+    goto :settings
+)
+if "%ogg%"=="x" (
+    set ogg=_
+    set aac=x
+    set format=aac
+    goto :settings
+)
+if "%aac%"=="x" (
+    set aac=_
+    set mp4=x
+    set format=mp4
+    goto :settings
+)
+if "%mp4%"=="x" (
+    set mp4=_
+    set mkv=x
+    set format=mkv
+    goto :settings
+)
+if "%mkv%"=="x" (
+    set mkv=_
+    set avi=x
+    set format=avi
+    goto :settings
+)
+if "%avi%"=="x" (
+    set avi=_
+    set mp3=x
+    set format=mp3
+    goto :settings
+)
+
+:download
+cls
+yt-dlp -f %track% -o output %url%
+for %%I in (output*) do set "input=%%I"
+ffmpeg -i "%input%" output.%format%
+del %input%
+cls
+echo Downloaded successfully
 echo.
 pause
-goto :yt-dlpCheck
+goto :settings
