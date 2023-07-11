@@ -1,4 +1,4 @@
-## [⬇ Download](https://raw.githack.com/Zoult/mp3downloader/main/ytdownloader.bat)
+## [⬇ Download](https://raw.githack.com/Zoult/batchytdownloader/main/ytdownloader.bat)
 ![](https://cdn.discordapp.com/attachments/923633338378489856/1128395057419014184/image.png)
 
 ### 📖 Requirements
