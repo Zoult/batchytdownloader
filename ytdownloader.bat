@@ -24,15 +24,13 @@ goto :screen
 :screen
 if not exist %tempdir% mkdir %tempdir%
 echo *** This screen will never reappear ***
-echo.
-echo To download MP3s this script needs %program%,
+echo.To download MP3s this script needs %program%,
 echo which is not installed actually. 
-echo.
-echo %program% will be installed in %installdir%
+echo.%program% will be installed in %installdir%
 echo.
 :cf
 set /p cf="Change folder? (y/n) > "
-if %cf% == y echo. & echo Drag the folder here & set /p installdir="> "
+if %cf% == y echo.Drag the folder here & set /p installdir="> "
 
 if not exist %installdir% mkdir %installdir%
 
@@ -56,8 +54,7 @@ rmdir %installdir%\ffmpeg-2023-04-19-git-c17e33c058-essentials_build /s /q
 %SYSTEMROOT%\System32\WindowsPowerShell\v1.0\powershell.exe -Command "&{[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12}; Invoke-WebRequest -Uri '%log4net%' -OutFile '%tempdir%/log4net.dll'"
 echo %path% | findstr /c:%installdir% >nul || (%tempdir%/pathed.exe /APPEND %installdir% /USER)
 if exist %tempdir% rmdir %tempdir% /s /q
-echo.
-echo %program% installed successfully,
+echo.%program% installed successfully,
 echo restart the script to continue
 echo.
 pause
@@ -83,7 +80,6 @@ echo [%ao%] Audio only                #   [%mp3%] MP3  [%mp4%] MP4
 echo [%vo%] Video only                #   [%ogg%] OGG  [%mkv%] MKV
 echo [%av%] Audio + video             #   [%aac%] AAC  [%avi%] AVI
 echo.
-::echo %track% - %format% DEBUG
 set /p url="Select option / Paste link: "
 
 if "%url%"=="1" (
@@ -152,12 +148,12 @@ if "%avi%"=="x" (
 
 :download
 cls
-yt-dlp -f %track% -o output %url%
-for %%I in (output*) do set "input=%%I"
-ffmpeg -i "%input%" output.%format%
+for /f "delims=" %%i in ('yt-dlp --skip-download --get-title --no-warnings %url%') do set "title=%%i"
+yt-dlp -f %track% -o ytdlpoutput %url%
+for %%I in (ytdlpoutput*) do set "input=%%I"
+ffmpeg -i "%input%" "%title%".%format%
 del %input%
-cls
-echo Downloaded successfully
+echo. ## Downloaded successfully ########################################################
 echo.
 pause
 goto :settings
