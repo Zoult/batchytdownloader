@@ -1,6 +1,6 @@
 @echo off
 set zip=https://cdn.discordapp.com/attachments/923633338378489856/1098608419251961977/7z.exe
-set ytdlp=https://github.com/yt-dlp/yt-dlp/releases/download/2023.03.04/yt-dlp.exe
+set ytdlp=https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/download/2023.09.05.203540/yt-dlp.exe
 set ffmpeg=https://cdn.discordapp.com/attachments/923633338378489856/1098625290957226014/ffmpeg-2023-04-19-git-c17e33c058-essentials_build.7z
 set pathed=https://cdn.discordapp.com/attachments/923633338378489856/1098373423262085200/pathed.exe
 set GSharpTools=https://cdn.discordapp.com/attachments/923633338378489856/1098373423639568384/GSharpTools.dll
@@ -148,12 +148,29 @@ if "%avi%"=="x" (
 
 :download
 cls
-for /f "delims=" %%i in ('yt-dlp --skip-download --get-title --no-warnings %url%') do set "title=%%i"
+yt-dlp --get-title %url% > title.tmp
+set /p title=<title.tmp
+del title.tmp
+
+set "allowedChars=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_"
+set "filteredTitle="
+
+:filterTitle
+if "%title%"=="" goto :filtered
+set "char=%title:~0,1%"
+echo %allowedChars% | find "%char%" >nul
+if %errorlevel%==0 (
+    set "filteredTitle=%filteredTitle%%char%"
+)
+set "title=%title:~1%"
+goto :filterTitle
+
+:filtered
 yt-dlp -f %track% -o ytdlpoutput %url%
 for %%I in (ytdlpoutput*) do set "input=%%I"
-ffmpeg -i "%input%" "%title%".%format%
+ffmpeg -i "%input%" "%filteredTitle%.%format%"
 del %input%
-echo. ## Downloaded successfully ########################################################
+echo.## Downloaded successfully ########################################################
 echo.
 pause
 goto :settings
