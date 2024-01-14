@@ -1,4 +1,4 @@
-## [⬇ Download](https://raw.githack.com/Zoult/batchytdownloader/main/batchdownloader.bat)
+## [⬇ Download](https://raw.githack.com/Zoult/batchdownloader/main/batchdownloader.bat)
 ![](https://cdn.discordapp.com/attachments/923633338378489856/1128395057419014184/image.png)
 
 ### 📖 Requirements
